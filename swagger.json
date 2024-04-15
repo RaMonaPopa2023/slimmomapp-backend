@@ -11,11 +11,8 @@
   },
   "servers": [
     {
-      "url": "https://virtserver.swaggerhub.com/RRAMONA38/slimmomapp/1.0.0",
-      "description": "SwaggerHub API Auto Mocking"
-    },
-    {
-      "url": "https://slimmomapp-backend.goit.study/api"
+      "url": "https://slimmomapp-backend.onrender.com",
+      "description": "The production API server"
     }
   ],
   "tags": [
