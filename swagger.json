@@ -1,0 +1,1192 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "slimmomapp",
+    "description": "Daily calories REST API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/RRAMONA38/slimmomapp/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
+      "url": "https://slimmomapp-backend.goit.study/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "User",
+      "description": "User's endpoint"
+    },
+    {
+      "name": "Product",
+      "description": "Products endpoints"
+    },
+    {
+      "name": "Calorie",
+      "description": "Calories endpoints"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBadRequest"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorConflict"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorServer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User login",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBadRequest"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorForbidden"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorServer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "The token issued to the current user",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorUnauthorized"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorServer"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/users/current": {
+      "get": {
+        "tags": ["User"],
+        "summary": "User info",
+        "parameters": [
+          {
+            "name": "Authorization ",
+            "in": "header",
+            "description": "The token issued to the current user",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentUserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorUnauthorized"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorServer"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "Search for a product in DB",
+        "parameters": [
+          {
+            "name": "productName",
+            "in": "query",
+            "description": "Search product as 'productName'",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductFromDBResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBadRequest"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorNotFound"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorServer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Product"],
+        "summary": "Add a new eaten product",
+        "parameters": [
+          {
+            "name": "Authorization ",
+            "in": "header",
+            "description": "The token issued to the current user",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddEatenProductRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddEatenProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBadRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorUnauthorized"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorServer"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/products/{productId}": {
+      "delete": {
+        "tags": ["Product"],
+        "summary": "Delete eaten product",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "The token issued to the current user",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of the product to be removed",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteEatenProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBadRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorNotFound"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorServer"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/products/{date}": {
+      "get": {
+        "tags": ["Product"],
+        "summary": "Get all the products eaten by the user in a day",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "The token issued to the current user",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "in": "path",
+            "description": "Selected day in the format 'Sat Apr 08 2023'",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EatenProdectPerDayResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBadRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorUnauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorNotFound"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorServer"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/calories/auth": {
+      "post": {
+        "tags": ["Calorie"],
+        "summary": "Get a calorie count and non-recommended foods for registered user",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "The token issued to the current user",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DayCalorieRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DayCalorieResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBadRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorUnauthorized"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorServer"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/calories": {
+      "post": {
+        "tags": ["Calorie"],
+        "summary": "Get a calorie count and non-recommended foods",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DayCalorieRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DayCaloriePublicResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBadRequest"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorServer"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "required": ["email", "name", "password"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Ramona"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "user1234"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/RegistrationResponse_user"
+          }
+        }
+      },
+      "LoginRequest": {
+        "required": ["email", "password"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Access token",
+            "example": "lsdfkgv.ucfg.cmsghd"
+          },
+          "user": {
+            "$ref": "#/components/schemas/LoginResponse_user"
+          }
+        }
+      },
+      "CurrentUserResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "642da20a63fc51b"
+          },
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Ramona"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "height": {
+            "type": "number",
+            "description": "User's height",
+            "example": 184
+          },
+          "age": {
+            "type": "number",
+            "description": "User's age",
+            "example": 38
+          },
+          "currentWeight": {
+            "type": "number",
+            "description": "User's weight",
+            "example": 102
+          },
+          "desiredWeight": {
+            "type": "number",
+            "description": "User's desired weight",
+            "example": 80
+          },
+          "bloodType": {
+            "type": "number",
+            "description": "User's blood type",
+            "example": 4
+          },
+          "dailyRate": {
+            "type": "number",
+            "description": "User's daily calorie norm",
+            "example": 1850
+          },
+          "notRecFood": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoginResponse_user_notRecFood"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "User account creation date",
+            "example": "2023-04-05T16:30:02.590Z"
+          }
+        }
+      },
+      "ProductFromDBResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ProductFromDBResponse_inner"
+        }
+      },
+      "AddEatenProductRequest": {
+        "required": ["productName", "weight"],
+        "type": "object",
+        "properties": {
+          "productName": {
+            "type": "string",
+            "description": "Eaten product",
+            "example": "Pancakes with mushrooms"
+          },
+          "weight": {
+            "type": "number",
+            "description": "Eaten product's weight",
+            "example": 150
+          }
+        }
+      },
+      "AddEatenProductResponse": {
+        "type": "object",
+        "properties": {
+          "productName": {
+            "type": "string",
+            "description": "Eaten product",
+            "example": "Pancakes with mushrooms"
+          },
+          "weight": {
+            "type": "number",
+            "description": "Eaten product's weight",
+            "example": 150
+          },
+          "calories": {
+            "type": "number",
+            "description": "Eaten product's calorie",
+            "example": 654
+          },
+          "date": {
+            "type": "string",
+            "description": "Date of addition of the eaten product",
+            "example": "2023-04-05T15:06:20.614Z"
+          },
+          "owner": {
+            "type": "string",
+            "description": "User id",
+            "example": "642da20a63fc51b"
+          },
+          "_id": {
+            "type": "string",
+            "description": "Eaten product's id",
+            "example": "ed7d7914c5bd86ef"
+          }
+        }
+      },
+      "DeleteEatenProductResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Product deleted"
+          }
+        }
+      },
+      "EatenProdectPerDayResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/EatenProdectPerDayResponse_inner"
+        }
+      },
+      "DayCalorieRequest": {
+        "required": [
+          "age",
+          "bloodType",
+          "currentWeight",
+          "desiredWeight",
+          "height"
+        ],
+        "type": "object",
+        "properties": {
+          "height": {
+            "type": "number",
+            "description": "User's height",
+            "example": 184
+          },
+          "age": {
+            "type": "number",
+            "description": "User's age",
+            "example": 38
+          },
+          "currentWeight": {
+            "type": "number",
+            "description": "User's weight",
+            "example": 102
+          },
+          "desiredWeight": {
+            "type": "number",
+            "description": "User's desired weight",
+            "example": 80
+          },
+          "bloodType": {
+            "type": "number",
+            "description": "User's blood type",
+            "example": 4
+          }
+        }
+      },
+      "DayCalorieResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "642da20a63fc51b"
+          },
+          "height": {
+            "type": "number",
+            "description": "User's height",
+            "example": 184
+          },
+          "age": {
+            "type": "number",
+            "description": "User's age",
+            "example": 38
+          },
+          "currentWeight": {
+            "type": "number",
+            "description": "User's weight",
+            "example": 102
+          },
+          "desiredWeight": {
+            "type": "number",
+            "description": "User's desired weight",
+            "example": 80
+          },
+          "bloodType": {
+            "type": "number",
+            "description": "User's blood type",
+            "example": 4
+          },
+          "dailyRate": {
+            "type": "number",
+            "description": "User's daily calorie norm",
+            "example": 1850
+          },
+          "notRecFood": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoginResponse_user_notRecFood"
+            }
+          }
+        }
+      },
+      "DayCaloriePublicResponse": {
+        "type": "object",
+        "properties": {
+          "dailyRate": {
+            "type": "number",
+            "description": "User's daily calorie norm",
+            "example": 1850
+          },
+          "notRecFood": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoginResponse_user_notRecFood"
+            }
+          }
+        }
+      },
+      "ErrorBadRequest": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Error message"
+          }
+        }
+      },
+      "ErrorUnauthorized": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Not authorized"
+          }
+        }
+      },
+      "ErrorForbidden": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Email or password is wrong"
+          }
+        }
+      },
+      "ErrorNotFound": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Not found"
+          }
+        }
+      },
+      "ErrorConflict": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Email in use"
+          }
+        }
+      },
+      "ErrorServer": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Server error"
+          }
+        }
+      },
+      "RegistrationResponse_user": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Ramona"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          }
+        }
+      },
+      "LoginResponse_user_notRecFood": {
+        "type": "object",
+        "properties": {
+          "en": {
+            "type": "string",
+            "description": "Not recommended food",
+            "example": "Pancakes with mushrooms"
+          }
+        }
+      },
+      "LoginResponse_user": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Ramona"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "dailyRate": {
+            "type": "number",
+            "description": "User's daily calorie norm",
+            "example": 1850
+          },
+          "notRecFood": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoginResponse_user_notRecFood"
+            }
+          }
+        }
+      },
+      "ProductFromDBResponse_inner": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Product id",
+            "example": "642da20a63fc51b"
+          },
+          "categories": {
+            "type": "object",
+            "properties": {
+              "en": {
+                "type": "string",
+                "description": "Product categorie",
+                "example": "flour"
+              }
+            }
+          },
+          "weight": {
+            "type": "number",
+            "description": "Product weight",
+            "example": 100
+          },
+          "title": {
+            "type": "object",
+            "properties": {
+              "en": {
+                "type": "string",
+                "description": "Product name",
+                "example": "Pancakes with mushrooms"
+              }
+            }
+          },
+          "calories": {
+            "type": "number",
+            "description": "Product calories per 100g",
+            "example": 218
+          },
+          "groupBloodNotAllowed": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "boolean",
+                  "example": true
+                }
+              ]
+            }
+          }
+        }
+      },
+      "EatenProdectPerDayResponse_inner": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Product id",
+            "example": "642da20a63fc51b"
+          },
+          "productName": {
+            "type": "string",
+            "description": "Product name",
+            "example": "Pancakes with mushrooms"
+          },
+          "weight": {
+            "type": "number",
+            "description": "Product weight",
+            "example": 100
+          },
+          "calories": {
+            "type": "number",
+            "description": "Product calories",
+            "example": 218
+          },
+          "date": {
+            "type": "string",
+            "description": "Date when the product was eaten",
+            "example": "2023-04-05T10:02:51.803Z"
+          },
+          "owner": {
+            "type": "object",
+            "description": "User's id",
+            "example": "8l435tgfykj546"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
