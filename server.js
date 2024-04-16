@@ -22,10 +22,7 @@ require("dotenv").config();
 // Database connect
 const connectToDb = async () => {
   try {
-    await mongoose.connect(process.env.DB_HOST, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.DB_HOST);
     console.log("Database connection successful");
     app.listen(8080, () => {
       console.log("Server is running. Use our API on port: 8080");
