@@ -15,6 +15,7 @@
 //   });
 
 const { default: mongoose } = require("mongoose");
+const app = require("./app");
 
 require("dotenv").config();
 
@@ -35,4 +36,4 @@ const connectToDb = async () => {
   }
 };
 
-module.exports = { connectToDb };
+connectToDb();

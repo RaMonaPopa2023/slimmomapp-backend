@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-const { RequestError } = require("../helpers/RequestError");
+const RequestError = require("../helpers/RequestError");
 const { registerSchema, loginSchema } = require("../schemas/auth");
 require("dotenv").config();
 
