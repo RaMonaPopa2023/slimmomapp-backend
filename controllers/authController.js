@@ -55,9 +55,12 @@ const login = async (req, res, next) => {
     if (!isPasswordValid) {
       throw RequestError(403, "Email or password is wrong");
     }
+    const token = jwt.sign({ id: existingUser._id }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
-    const payload = { id: existingUser._id };
-    const token = jwt.sign(payload, TOKEN_KEY, { expiresIn: TOKEN_LIFE_TIME });
+    // const payload = { id: existingUser._id };
+    // const token = jwt.sign(payload, TOKEN_KEY, { expiresIn: TOKEN_LIFE_TIME });
     await User.findByIdAndUpdate(existingUser._id, { token });
     res.json({
       token,
