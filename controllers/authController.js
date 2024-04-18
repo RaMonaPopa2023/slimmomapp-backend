@@ -5,7 +5,8 @@ const RequestError = require("../helpers/RequestError");
 const { registerSchema, loginSchema } = require("../schemas/auth");
 require("dotenv").config();
 
-const { TOKEN_KEY, TOKEN_LIFE_TIME } = process.env;
+// const { TOKEN_KEY, TOKEN_LIFE_TIME } = process.env;
+const { JWT_SECRET } = process.env;
 
 const register = async (req, res, next) => {
   try {
