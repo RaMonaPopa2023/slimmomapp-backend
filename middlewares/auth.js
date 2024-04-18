@@ -3,7 +3,7 @@ const { RequestError } = require("../helpers/RequestError");
 const User = require("../models/user");
 require("dotenv").config();
 
-const { TOKEN_KEY } = process.env;
+const TOKEN_KEY = req.cookies.jwt || req.headers.authorization?.split(" ")[1];
 
 const auth = async (req, res, next) => {
   try {
