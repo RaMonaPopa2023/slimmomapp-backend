@@ -1,6 +1,8 @@
 const Product = require("../models/product");
 const User = require("../models/user");
-const { RequestError, calcDailyCalorieNorm } = require("../helpers");
+const { RequestError } = require("../helpers/RequestError");
+const { calcDailyCalorieNorm } = require("../helpers/calc");
+
 const { userDataSchema } = require("../schemas/users");
 
 const getDailyCalPublic = async (req, res, next) => {
