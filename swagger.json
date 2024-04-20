@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://slimmomapp-backend.onrender.com",
+      "url": "https://slimmomapp-backend.onrender.com/api",
       "description": "The production API server"
     }
   ],
